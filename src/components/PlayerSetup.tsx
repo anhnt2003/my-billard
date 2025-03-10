@@ -1,16 +1,16 @@
 import './PlayerSetup.css';
 
-import React, { useState } from 'react';
+import {
+  JSX,
+  useState,
+} from 'react';
 
+import { toast } from 'react-toastify';
+
+import { Player } from '../types/Player';
 import ScoreTracker from './ScoreTracker';
 
-interface Player {
-  id: number;
-  name: string;
-  totalScore: number;
-}
-
-const PlayerSetup: React.FC = () => {
+function PlayerSetup() : JSX.Element {
   const [playerCount, setPlayerCount] = useState<number>(2);
   const [players, setPlayers] = useState<Player[]>([
     { id: 1, name: '', totalScore: 0 },
@@ -18,7 +18,7 @@ const PlayerSetup: React.FC = () => {
   ]);
   const [gameStarted, setGameStarted] = useState(false);
 
-  const updatePlayerCount = (newCount: number) => {
+  function updatePlayerCount(newCount: number) {
     const count = Math.max(2, Math.min(8, newCount));
     setPlayerCount(count);
     
@@ -38,9 +38,11 @@ const PlayerSetup: React.FC = () => {
         return prevPlayers.slice(0, count);
       }
     });
+    
+    toast.info(`Player count updated to ${count}`);
   };
 
-  const handlePlayerNameChange = (id: number, name: string) => {
+  function handlePlayerNameChange(id: number, name: string) {
     setPlayers(prevPlayers =>
       prevPlayers.map(player =>
         player.id === id ? { ...player, name } : player
@@ -48,20 +50,24 @@ const PlayerSetup: React.FC = () => {
     );
   };
 
-  const handleStartGame = () => {
+  function handleStartGame() {
     const emptyNames = players.filter(player => !player.name.trim());
     if (emptyNames.length > 0) {
-      alert('Please enter names for all players before starting the game.');
+      toast.error('Please enter names for all players before starting the game.');
       return;
     }
     setGameStarted(true);
+    if (players.some(p => p.totalScore === 0)) {
+      toast.success('Game started successfully!');
+    } 
   };
 
-  const handleBackToSetup = () => {
+  function handleBackToSetup() {
     setGameStarted(false);
+    toast.info('Returned to player setup');
   };
 
-  const handleScoreUpdate = (updatedPlayers: Player[]) => {
+  function handleScoreUpdate(updatedPlayers: Player[]) {
     setPlayers(updatedPlayers);
   };
 

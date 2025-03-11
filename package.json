@@ -20,7 +20,7 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "wwww.mybillard.ct.ws",
+  "homepage": "http://www.mybillard.infinityfree.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
